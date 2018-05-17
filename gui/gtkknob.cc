@@ -182,13 +182,13 @@ static void knob_expose(GtkWidget *widget, int knob_x, int knob_y, GdkEventExpos
         cairo_move_to(cr, radius_x, radius_y);
         cairo_line_to(cr,lengh_x,lengh_y);
         cairo_set_line_width(cr,min(5, max(2,knob_x/30)));
-        cairo_set_source_rgb (cr,0.63,0.63,0.63);
+        cairo_set_source_rgb (cr,0.61,0.36,0.2);
         cairo_stroke(cr);
         
         /** show value on the kob**/
         char s[64];
         print_value(G_OBJECT(adj),s);
-        cairo_set_source_rgba (cr, 0.6, 0.6, 0.6,0.6);
+        cairo_set_source_rgba (cr, 0.61, 0.36, 0.2,0.8);
         cairo_set_font_size (cr, 11.0);
         cairo_select_font_face (cr, "Sans", CAIRO_FONT_SLANT_NORMAL,
                                    CAIRO_FONT_WEIGHT_BOLD);

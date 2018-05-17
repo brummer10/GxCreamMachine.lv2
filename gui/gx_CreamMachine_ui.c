@@ -93,7 +93,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor*   descriptor,
     const char* plug_name = "GxCreamMachine" ;
     ui->logo = gtk_label_new(plug_name);
     GdkColor color;
-    gdk_color_parse("#666666", &color);
+    gdk_color_parse("#613620", &color);
     gtk_widget_modify_fg (ui->logo, GTK_STATE_NORMAL, &color);
     GtkStyle *style = gtk_widget_get_style(ui->logo);
     pango_font_description_set_size(style->font_desc, 12*PANGO_SCALE);
@@ -119,7 +119,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor*   descriptor,
     gtk_box_pack_end(GTK_BOX(ui->hbox), ui->hbox2, FALSE, FALSE, 25);
     gtk_box_pack_start(GTK_BOX(ui->vbox1), ui->hbox3, FALSE, FALSE, 60);
     gtk_box_pack_end(GTK_BOX(ui->vbox1), ui->logo, FALSE, FALSE, 0);
-    gdk_color_parse("#888888", &color);
+    gdk_color_parse("#613620", &color);
 
 
     ui->bp_adj = gtk_adjustment_new( 0.0, 0.0, 1.0, 1.0, 1.0, 0);
