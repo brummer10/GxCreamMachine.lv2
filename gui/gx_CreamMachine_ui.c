@@ -20,6 +20,9 @@ typedef struct {
     GtkWidget* pbox;
     GtkWidget* box;
     GtkWidget* hbox;
+    GtkWidget* hbox1;
+    GtkWidget* hbox2;
+    GtkWidget* hbox3;
     GtkWidget* vbox;
     GtkWidget* vbox1;
     GtkWidget* logo;
@@ -70,6 +73,9 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor*   descriptor,
     ui->pbox        = NULL;
     ui->box         = NULL;
     ui->hbox        = NULL;
+    ui->hbox1        = NULL;
+    ui->hbox2        = NULL;
+    ui->hbox3        = NULL;
     ui->vbox        = NULL;
     ui->vbox1        = NULL;
     ui->bypass      = NULL;
@@ -90,23 +96,29 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor*   descriptor,
     gdk_color_parse("#666666", &color);
     gtk_widget_modify_fg (ui->logo, GTK_STATE_NORMAL, &color);
     GtkStyle *style = gtk_widget_get_style(ui->logo);
-    pango_font_description_set_size(style->font_desc, 24*PANGO_SCALE);
+    pango_font_description_set_size(style->font_desc, 12*PANGO_SCALE);
     pango_font_description_set_weight(style->font_desc, PANGO_WEIGHT_BOLD);
     gtk_widget_modify_font(ui->logo, style->font_desc);
 
     ui->pbox = gx_paint_box_new(GTK_ORIENTATION_VERTICAL,false, 0);
     set_expose_func(GX_CREAMMACHINE_PAINT_BOX(ui->pbox),"pedal_expose");
     ui->box = gtk_vbox_new(FALSE, 4);
-    ui->hbox = gtk_hbox_new(TRUE, 10);
-    gtk_container_set_border_width(GTK_CONTAINER(ui->hbox),35);
-    ui->vbox = gtk_vbox_new(TRUE, 0);
-    ui->vbox1 = gtk_vbox_new(TRUE, 0);
+    ui->hbox = gtk_hbox_new(FALSE, 10);
+    ui->hbox1 = gtk_hbox_new(FALSE, 10);
+    ui->hbox2 = gtk_hbox_new(FALSE, 10);
+    ui->hbox3 = gtk_hbox_new(FALSE, 10);
+    gtk_container_set_border_width(GTK_CONTAINER(ui->hbox),15);
+    ui->vbox = gtk_hbox_new(TRUE, 0);
+    ui->vbox1 = gtk_hbox_new(TRUE, 0);
+    gtk_container_set_border_width(GTK_CONTAINER(ui->vbox1),10);
 
     gtk_box_pack_start(GTK_BOX(ui->pbox), ui->box, TRUE, TRUE, 4);
-    gtk_box_pack_start(GTK_BOX(ui->box), ui->hbox, TRUE, TRUE, 4);
-    gtk_box_pack_start(GTK_BOX(ui->box), ui->vbox, TRUE, TRUE, 15);
-    gtk_box_pack_end(GTK_BOX(ui->pbox), ui->vbox1, FALSE, FALSE, 15);
-    gtk_box_pack_end(GTK_BOX(ui->pbox), ui->logo, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(ui->box), ui->vbox1, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(ui->box), ui->hbox, FALSE, FALSE, 4);
+    gtk_box_pack_start(GTK_BOX(ui->hbox), ui->hbox1, FALSE, FALSE, 15);
+    gtk_box_pack_end(GTK_BOX(ui->hbox), ui->hbox2, FALSE, FALSE, 25);
+    gtk_box_pack_start(GTK_BOX(ui->vbox1), ui->hbox3, FALSE, FALSE, 60);
+    gtk_box_pack_end(GTK_BOX(ui->vbox1), ui->logo, FALSE, FALSE, 0);
     gdk_color_parse("#888888", &color);
 
 
@@ -121,15 +133,16 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor*   descriptor,
     pango_font_description_set_weight(style->font_desc, PANGO_WEIGHT_BOLD);
     gtk_widget_modify_font(ui->bp_label, style->font_desc);
 
-    gtk_box_pack_start(GTK_BOX(ui->hbox), ui->bp_box, TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(ui->bp_box), ui->bypass, TRUE, TRUE, 0);
-    gtk_box_pack_start(GTK_BOX(ui->bp_box), ui->bp_label, FALSE, FALSE, 0);
+    gtk_box_pack_start(GTK_BOX(ui->hbox), ui->bp_box,  FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(ui->bp_box), ui->bypass,  FALSE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX(ui->bp_box), ui->bp_label, FALSE, TRUE, 0);
     ui->bp_args = (struct gx_args*) malloc(sizeof(struct gx_args));
     ui->bp_args->ui = ui;
     ui->bp_args->port_index = (int)BYPASS;
     g_signal_connect(G_OBJECT(ui->bp_adj), "value-changed",
           G_CALLBACK(ref_value_changed),(gpointer*)ui->bp_args);
 
+    gtk_box_pack_start(GTK_BOX(ui->hbox), ui->vbox, TRUE, TRUE, 80);
 
     ui->adj[1] = gtk_adjustment_new( 0.5, 0.0, 1.0, 0.01, 0.01*10.0, 0);
     ui->knob[1] = gtk_knob_new_with_adjustment(GTK_ADJUSTMENT(ui->adj[1]));
@@ -260,6 +273,15 @@ static void cleanup(LV2UI_Handle handle) {
         }
         if (GTK_IS_WIDGET(ui->hbox)) {
             gtk_widget_destroy(ui->hbox);
+        }
+        if (GTK_IS_WIDGET(ui->hbox1)) {
+            gtk_widget_destroy(ui->hbox1);
+        }
+        if (GTK_IS_WIDGET(ui->hbox2)) {
+            gtk_widget_destroy(ui->hbox2);
+        }
+        if (GTK_IS_WIDGET(ui->hbox3)) {
+            gtk_widget_destroy(ui->hbox3);
         }
         if (GTK_IS_WIDGET(ui->box)) {
             gtk_widget_destroy(ui->box);

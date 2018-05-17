@@ -136,10 +136,10 @@ static void knob_expose(GtkWidget *widget, int knob_x, int knob_y, GdkEventExpos
         cairo_arc(cr,knobx1+arc_offset, knoby1+arc_offset, knob_x/2.1, 0, 2 * M_PI );
         cairo_pattern_t*pat =
             cairo_pattern_create_radial (knobx1+arc_offset-knob_x/6,knoby1+arc_offset-knob_x/6, 1,knobx1+arc_offset,knoby1+arc_offset,knob_x/2.1 );
-            cairo_pattern_add_color_stop_rgb (pat, 0.5, 0.15, 0.15, 0.15);
-            cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.2, 0.2, 0.2);
-            cairo_pattern_add_color_stop_rgb (pat, 0.9, 0.1, 0.1,0.1);
-            cairo_pattern_add_color_stop_rgb (pat, 1, 0.1, 0.1,0.1);
+            cairo_pattern_add_color_stop_rgb (pat, 1.0, 0.04, 0.04, 0.04);
+            cairo_pattern_add_color_stop_rgb (pat, 0.9, 0.18, 0.08, 0.08);
+            cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.02, 0.02,0.02);
+            cairo_pattern_add_color_stop_rgb (pat, 0.5, 0.01, 0.01,0.01);
         
         cairo_set_source (cr, pat);
         cairo_fill_preserve (cr);
@@ -161,18 +161,18 @@ static void knob_expose(GtkWidget *widget, int knob_x, int knob_y, GdkEventExpos
                 cairo_pattern_add_color_stop_rgb (pat, 1, 0.1, 0.1,0.1); 
             }
         } else {
-            cairo_pattern_add_color_stop_rgb (pat, 0, 0.1, 0.1, 0.1);
-            cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.2, 0.2, 0.2);
-            cairo_pattern_add_color_stop_rgb (pat, 1, 0.1, 0.1,0.1);
+            cairo_pattern_add_color_stop_rgb (pat, 0, 0.01, 0.01, 0.01);
+            cairo_pattern_add_color_stop_rgb (pat, 0.7, 0.28, 0.08, 0.08);
+            cairo_pattern_add_color_stop_rgb (pat, 1, 0.02, 0.02,0.02);
         } 
         
         cairo_set_source (cr, pat);
         cairo_fill_preserve (cr);
-        cairo_set_source_rgb (cr, 0.1, 0.1, 0.1);
+        cairo_set_source_rgb (cr, 0.05, 0.05, 0.05);
         cairo_set_line_width(cr, 4.0);
         cairo_stroke_preserve(cr);
         cairo_arc(cr,knobx1+arc_offset, knoby1+arc_offset, knob_x/3.1, 0, 2 * M_PI );
-        cairo_set_source_rgb (cr, 0., 0., 0.);
+        cairo_set_source_rgb (cr, 0.0, 0.0, 0.0);
         cairo_set_line_width(cr, 1.0);
         cairo_stroke(cr);
 
