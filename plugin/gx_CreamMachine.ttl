@@ -121,7 +121,8 @@ rdfs:comment """
     ] .
 
 <http://guitarix.sourceforge.net/plugins/gx_CreamMachine_gui#_CreamMachine_>
-  a guiext:GtkUI;
+  a guiext:X11UI;
   guiext:binary <gx_CreamMachine_ui.so>;
-  guiext:requiredFeature guiext:makeResident;
+        lv2:extensionData guiext::idle ; 
+        lv2:requiredFeature guiext:makeResident;
   .
