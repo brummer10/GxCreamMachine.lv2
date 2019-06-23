@@ -9,6 +9,12 @@ struct table1d { // 1-dimensional function table
     float data[];
 };
 
+typedef struct {
+    float c;
+    float d;
+    float e;
+} average;
+
 template <int tab_size>
 struct table1d_imp {
     float low;
@@ -64,10 +70,9 @@ static table1d_imp<200> tube_table __rt_data = {
 	}
 };
 
+average MA = (average) {0.0,0.0,0.0};
+
 double always_inline tubeclip(double x) {
-    static double c = 0;
-    static double d = 0;
-    static double e = 0;
     double f = fabs(x);
     f = f * tube_table.istep;
     int i = static_cast<int>(f);
@@ -79,10 +84,10 @@ double always_inline tubeclip(double x) {
 	f -= i;
 	f = tube_table.data[i]*(1-f) + tube_table.data[i+1]*f;
     }
-    double fm = f*0.5 + c*0.3 + d*0.2 * e*0.1;
-    e = d;
-    d = c;
-    c = f;
+    double fm = f*0.5 + MA.c*0.3 + MA.d*0.2 * MA.e*0.1;
+    MA.e = MA.d;
+    MA.d = MA.c;
+    MA.c = f;
     return copysign(fm, x);
 }
 
