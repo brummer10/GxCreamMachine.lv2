@@ -70,9 +70,7 @@ static table1d_imp<200> tube_table __rt_data = {
 	}
 };
 
-average MA = (average) {0.0,0.0,0.0};
-
-double always_inline tubeclip(double x) {
+double always_inline tubeclip(double x, average MA) {
     double f = fabs(x);
     f = f * tube_table.istep;
     int i = static_cast<int>(f);

@@ -263,6 +263,7 @@ void Gx_CreamMachine_::deactivate_f()
 
 void Gx_CreamMachine_::run_dsp_(uint32_t n_samples)
 {
+  if (n_samples < 1) return;
   uint32_t ReCount = n_samples;
   if (fact>1) {
     ReCount = n_samples/fact ;
@@ -397,7 +398,6 @@ const LV2_Descriptor Gx_CreamMachine_::descriptor =
 
 ////////////////////////// LV2 SYMBOL EXPORT ///////////////////////////
 
-extern "C"
 LV2_SYMBOL_EXPORT
 const LV2_Descriptor*
 lv2_descriptor(uint32_t index)
