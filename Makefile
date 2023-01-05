@@ -33,6 +33,15 @@
 	NAME = gx_CreamMachine
 	BUNDLE = $(NAME).lv2
 	VER = 0.1
+	# check OS specific stuff
+	OS := $(shell echo $$OS)
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S), Linux) #LINUX
+	endif
+	ifeq ($(OS), Windows_NT) #WINDOWS
+	endif
+	ifeq ($(UNAME_S), Darwin) #APPLE
+	endif
 	# set compile flags
 	CXXFLAGS += -D_FORTIFY_SOURCE=2 -I. -I./dsp -I./plugin -I./dsp/zita-resampler-1.1.0 -I./dsp/zita-resampler-1.1.0/zita-resampler \
 	 -fPIC -DPIC -O2 -Wall -fstack-protector -funroll-loops -ffast-math -fomit-frame-pointer -fstrength-reduce \
