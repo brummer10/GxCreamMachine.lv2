@@ -1,4 +1,5 @@
 	
+	ECHO ?= echo
 	STRIP ?= strip
 	# check if user is root
 	user = $(shell whoami)
@@ -39,6 +40,7 @@
 	ifeq ($(UNAME_S), Linux) #LINUX
 	endif
 	ifeq ($(OS), Windows_NT) #WINDOWS
+		ECHO += -e
 	endif
 	ifeq ($(UNAME_S), Darwin) #APPLE
 	endif
@@ -53,6 +55,7 @@
 	GUI_OBJECTS = gui/$(NAME)_x11ui.c
 	RES_OBJECTS = gui/pedal.o gui/pswitch.o
 	## output style (bash colours)
+	LGREEN = "\033[1;92m"
 	BLUE = "\033[1;34m"
 	RED =  "\033[1;31m"
 	NONE = "\033[0m"
@@ -63,53 +66,53 @@ all : check $(NAME)
 	@mkdir -p ./$(BUNDLE)
 	@cp ./plugin/*.ttl ./$(BUNDLE)
 	@mv ./*.so ./$(BUNDLE)
-	@if [ -f ./$(BUNDLE)/$(NAME).so ]; then echo $(BLUE)"build finish, now run make install"; \
-	else echo $(RED)"sorry, build failed"; fi
-	@echo $(NONE)
+	@if [ -f ./$(BUNDLE)/$(NAME).so ]; then $(ECHO) $(BLUE)"build finish, now run make install"; \
+	else $(ECHO) $(RED)"sorry, build failed"; fi
+	@$(ECHO) $(NONE)
 
 mod : check clean nogui
 	@mkdir -p ./$(BUNDLE)
 	@cp -R ./MOD/* ./$(BUNDLE)
 	@mv ./*.so ./$(BUNDLE)
-	@if [ -f ./$(BUNDLE)/$(NAME).so ]; then echo $(BLUE)"build finish, now run make install"; \
-	else echo $(RED)"sorry, build failed"; fi
-	@echo $(NONE)
+	@if [ -f ./$(BUNDLE)/$(NAME).so ]; then $(ECHO) $(BLUE)"build finish, now run make install"; \
+	else $(ECHO) $(RED)"sorry, build failed"; fi
+	@$(ECHO) $(NONE)
 
 check :
 ifdef ARMCPU
-	@echo $(RED)ARM CPU DEDECTED, please check the optimization flags
-	@echo $(NONE)
+	@$(ECHO) $(RED)ARM CPU DEDECTED, please check the optimization flags
+	@$(ECHO) $(NONE)
 endif
 
    #@build resource object files
 $(RES_OBJECTS) : gui/pedal.png gui/pswitch.png 
-	@echo $(LGREEN)"generate resource files,"$(NONE)
+	@$(ECHO) $(LGREEN)"generate resource files,"$(NONE)
 	-cd ./gui && $(LD) -r -b binary pedal.png -o pedal.o
 	-cd ./gui && $(LD) -r -b binary pswitch.png -o pswitch.o
 
 clean :
 	@rm -f $(NAME).so
 	@rm -rf ./$(BUNDLE)
-	@echo ". ." $(BLUE)", clean up"$(NONE)
+	@$(ECHO) ". ." $(BLUE)", clean up"$(NONE)
 
 dist-clean :
 	@rm -f $(NAME).so
 	@rm -rf ./$(BUNDLE)
 	@rm -rf ./$(RES_OBJECTS)
-	@echo ". ." $(BLUE)", clean up"$(NONE)
+	@$(ECHO) ". ." $(BLUE)", clean up"$(NONE)
 
 install :
 ifneq ("$(wildcard ./$(BUNDLE))","")
 	@mkdir -p $(DESTDIR)$(INSTALL_DIR)/$(BUNDLE)
 	cp -r ./$(BUNDLE)/* $(DESTDIR)$(INSTALL_DIR)/$(BUNDLE)
-	@echo ". ." $(BLUE)", done"$(NONE)
+	@$(ECHO) ". ." $(BLUE)", done"$(NONE)
 else
-	@echo ". ." $(BLUE)", you must build first"$(NONE)
+	@$(ECHO) ". ." $(BLUE)", you must build first"$(NONE)
 endif
 
 uninstall :
 	@rm -rf $(INSTALL_DIR)/$(BUNDLE)
-	@echo ". ." $(BLUE)", done"$(NONE)
+	@$(ECHO) ". ." $(BLUE)", done"$(NONE)
 
 $(NAME) : clean $(RES_OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME).so
