@@ -38,18 +38,26 @@
 	OS := $(shell echo $$OS)
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S), Linux) #LINUX
+		ABI_CFLAGS = -Wl,-z,nodelete
+		ABI_CXXFLAGS = -Wl,-z,relro,-z,now
+		ABI_LDFLAGS = -Wl,-z,noexecstack
+		GUI_LIBS = -L/usr/X11/lib -lX11
 	endif
 	ifeq ($(OS), Windows_NT) #WINDOWS
 		ECHO += -e
+		ABI_LDFLAGS = -static
+		GUI_LIBS = -liconv -lstdc++
+		PKGCONFIG_FLAGS = --static
 	endif
 	ifeq ($(UNAME_S), Darwin) #APPLE
+		# insert magic here
 	endif
 	# set compile flags
 	CXXFLAGS += -D_FORTIFY_SOURCE=2 -I. -I./dsp -I./plugin -I./dsp/zita-resampler-1.1.0 -I./dsp/zita-resampler-1.1.0/zita-resampler \
 	 -fPIC -DPIC -O2 -Wall -fstack-protector -funroll-loops -ffast-math -fomit-frame-pointer -fstrength-reduce \
-	 -fdata-sections -Wl,--gc-sections -Wl,-z,relro,-z,now $(SSE_CFLAGS)
-	LDFLAGS += -I. -shared -lm -Wl,-z,noexecstack 
-	GUI_LDFLAGS += -I./gui -shared -Wl,-z,noexecstack -lm `pkg-config --cflags --libs cairo` -L/usr/X11/lib -lX11
+	 -fdata-sections -Wl,--gc-sections $(SSE_CFLAGS)
+	LDFLAGS += -I. -shared $(ABI_LDFLAGS) -lm
+	GUI_LDFLAGS += -I./gui -shared $(ABI_LDFLAGS) -lm `pkg-config $(PKGCONFIG_FLAGS) --cflags --libs cairo` $(GUI_LIBS)
 	# invoke build files
 	OBJECTS = plugin/$(NAME).cpp 
 	GUI_OBJECTS = gui/$(NAME)_x11ui.c
@@ -116,7 +124,7 @@ uninstall :
 
 $(NAME) : clean $(RES_OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME).so
-	$(CC) $(CXXFLAGS) -Wl,-z,nodelete $(GUI_OBJECTS) $(RES_OBJECTS) $(GUI_LDFLAGS) -o $(NAME)_ui.so
+	$(CC) $(CXXFLAGS) $(ABI_CFLAGS) $(GUI_OBJECTS) $(RES_OBJECTS) $(GUI_LDFLAGS) -o $(NAME)_ui.so
 	$(STRIP) -s -x -X -R .note.ABI-tag $(NAME).so
 	$(STRIP) -s -x -X -R .note.ABI-tag $(NAME)_ui.so
 
