@@ -1,6 +1,7 @@
 	
 	ECHO ?= echo
 	STRIP ?= strip
+	PKGCONFIG ?= pkg-config
 	# check if user is root
 	user = $(shell whoami)
 	ifeq ($(user),root)
@@ -38,7 +39,28 @@
 	OS := $(shell echo $$OS)
 	UNAME_S := $(shell uname -s)
 	GUI_PLATFORM_DIR = ./gui
-	ifeq ($(UNAME_S), Linux) #LINUX
+	# cross compilation (e.g.: PKG_CONFIG_PATH=/usr/local/pkgconfig make CROSS=x86_64-w64-mingw32- mod)
+	ifneq (,$(findstring mingw,$(CROSS)))
+		# Found
+		TARGET = Windows
+		STRIP = $(CROSS)strip
+		PKGCONFIG = $(CROSS)pkg-config
+		CC = $(CROSS)cc
+		CXX = $(CROSS)g++
+		LD = $(CROSS)ld
+	else
+		# Not found
+		ifeq ($(UNAME_S), Linux) #LINUX
+			TARGET = Linux
+		endif
+		ifeq ($(OS), Windows_NT) #WINDOWS
+			TARGET = Windows
+		endif
+		ifeq ($(UNAME_S), Darwin) #APPLE
+			TARGET = Apple
+		endif
+	endif
+	ifeq ($(TARGET), Linux)
 		ABI_CFLAGS = -Wl,-z,nodelete
 		ABI_CXXFLAGS = -Wl,-z,relro,-z,now
 		ABI_LDFLAGS = -Wl,-z,noexecstack
@@ -46,9 +68,9 @@
 		LIB_EXT = so
 		#GUI_PLATFORM_FILES = $(GUI_PLATFORM_DIR)/gx_platform_linux.c
 	endif
-	ifeq ($(OS), Windows_NT) #WINDOWS
+	ifeq ($(TARGET), Windows)
 		ECHO += -e
-		ABI_LDFLAGS = -static
+		ABI_LDFLAGS = -static -lpthread
 		GUI_LIBS = -liconv -lstdc++
 		PKGCONFIG_FLAGS = --static
 		LIB_EXT = dll
@@ -56,16 +78,16 @@
 		TTLUPDATEGUI = sed -i '/a guiext:X11UI/ s/X11UI/WindowsUI/ ; /guiext:binary/ s/\.so/\.dll/ ' $(BUNDLE)/$(NAME).ttl
 		#GUI_PLATFORM_FILES = $(GUI_PLATFORM_DIR)/gx_platform_mswin.c
 	endif
-	ifeq ($(UNAME_S), Darwin) #APPLE
+	ifeq ($(TARGET), Apple)
 		# insert magic here
 		#GUI_PLATFORM_FILES = $(GUI_PLATFORM_DIR)/gx_platform_apple.c
 	endif
 	# set compile flags
 	CXXFLAGS += -D_FORTIFY_SOURCE=2 -I. -I./dsp -I./plugin -I./dsp/zita-resampler-1.1.0 -I./dsp/zita-resampler-1.1.0/zita-resampler \
 	 -fPIC -DPIC -O2 -Wall -fstack-protector -funroll-loops -ffast-math -fomit-frame-pointer -fstrength-reduce \
-	 -fdata-sections -Wl,--gc-sections $(SSE_CFLAGS)
+	 -fdata-sections -Wl,--gc-sections $(SSE_CFLAGS) `$(PKGCONFIG) $(PKGCONFIG_FLAGS) --cflags lv2`
 	LDFLAGS += -I. -shared $(ABI_LDFLAGS) -lm
-	GUI_LDFLAGS += -I./gui -shared $(ABI_LDFLAGS) -lm `pkg-config $(PKGCONFIG_FLAGS) --cflags --libs cairo` $(GUI_LIBS)
+	GUI_LDFLAGS += -I./gui -shared $(ABI_LDFLAGS) -lm `$(PKGCONFIG) $(PKGCONFIG_FLAGS) --cflags --libs cairo` $(GUI_LIBS)
 	# invoke build files
 	OBJECTS = plugin/$(NAME).cpp 
 	GUI_OBJECTS = gui/$(NAME)_x11ui.c
