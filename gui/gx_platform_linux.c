@@ -52,5 +52,14 @@ void gx_gui_destroy_main_window(gx_CreamMachineUI *ui) {
 	XCloseDisplay(ui->dpy);
 }
 
+void gx_gui_resize_surface(gx_CreamMachineUI *ui) {
+	XWindowAttributes attrs;
+	XGetWindowAttributes(ui->dpy, (Window)ui->parentWindow, &attrs);
+	ui->width = attrs.width;
+	ui->height = attrs.height;
+	XResizeWindow (ui->dpy,ui->win ,ui->width, ui->height);
+	cairo_xlib_surface_set_size( ui->surface, ui->width, ui->height);
+}
+
 #endif /* __linux__ */
 #endif /* __GX_PLATFORM_LINUX_H__ */
