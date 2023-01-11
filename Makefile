@@ -89,8 +89,8 @@
 	LDFLAGS += -I. -shared $(ABI_LDFLAGS) -lm
 	GUI_LDFLAGS += -I./gui -shared $(ABI_LDFLAGS) -lm `$(PKGCONFIG) $(PKGCONFIG_FLAGS) --cflags --libs cairo` $(GUI_LIBS)
 	# invoke build files
-	OBJECTS = plugin/$(NAME).cpp $(GUI_PLATFORM_FILES)
-	GUI_OBJECTS = gui/$(NAME)_gui.c
+	OBJECTS = plugin/$(NAME).cpp
+	GUI_OBJECTS = gui/$(NAME)_gui.c $(GUI_PLATFORM_FILES)
 	RES_OBJECTS = gui/pedal.o gui/pswitch.o
 	## output style (bash colours)
 	LGREEN = "\033[1;92m"
