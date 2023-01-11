@@ -13,6 +13,30 @@
 #endif /*__APPLE__ */
 
 /*---------------------------------------------------------------------
+-----------------------------------------------------------------------	
+				additional members of struct gx_CreamMachineUI
+-----------------------------------------------------------------------
+----------------------------------------------------------------------*/
+
+#ifdef __linux__
+#define platform_ui_members \
+	Display *dpy; \
+	Window win; \
+	void *parentWindow; \
+	Visual *visual; \
+	long event_mask; \
+	Atom DrawController;
+#endif /* __linux__ */
+
+#ifdef _WIN32
+#define platform_ui_members
+#endif /* _WIN32 */
+
+#ifdef __APPLE__
+#define platform_ui_members
+#endif /*__APPLE__ */
+
+/*---------------------------------------------------------------------
 -----------------------------------------------------------------------
 		define some MACROS to read png data from binary stream
 		png's been converted to object files with

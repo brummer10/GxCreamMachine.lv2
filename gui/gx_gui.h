@@ -93,12 +93,7 @@ typedef struct {
 
 // main window struct
 typedef struct {
-	Display *dpy;
-	Window win;
-	void *parentWindow;
-	Visual *visual;
-	long event_mask;
-	Atom DrawController;
+	platform_ui_members // platform specific; see gx_Platform.h
 
 	int width;
 	int height;
