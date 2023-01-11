@@ -8,6 +8,7 @@
 #include <X11/Xatom.h>
 #endif /* __linux__ */
 #ifdef _WIN32
+#include <windows.h>
 #endif /* _WIN32 */
 #ifdef __APPLE__
 #endif /*__APPLE__ */
@@ -29,7 +30,10 @@
 #endif /* __linux__ */
 
 #ifdef _WIN32
-#define platform_ui_members
+#define platform_ui_members \
+	HWND win; \
+	HWND parentWindow; \
+	BOOL mouse_inside;
 #endif /* _WIN32 */
 
 #ifdef __APPLE__
