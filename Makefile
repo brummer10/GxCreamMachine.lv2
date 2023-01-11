@@ -66,7 +66,7 @@
 		ABI_LDFLAGS = -Wl,-z,noexecstack
 		GUI_LIBS = -L/usr/X11/lib -lX11
 		LIB_EXT = so
-		#GUI_PLATFORM_FILES = $(GUI_PLATFORM_DIR)/gx_platform_linux.c
+		GUI_PLATFORM_FILES = $(GUI_PLATFORM_DIR)/gx_platform_linux.c
 	endif
 	ifeq ($(TARGET), Windows)
 		ECHO += -e
@@ -76,11 +76,11 @@
 		LIB_EXT = dll
 		TTLUPDATE = sed -i '/lv2:binary/ s/\.so/\.dll/ ' $(BUNDLE)/manifest.ttl
 		TTLUPDATEGUI = sed -i '/a guiext:X11UI/ s/X11UI/WindowsUI/ ; /guiext:binary/ s/\.so/\.dll/ ' $(BUNDLE)/$(NAME).ttl
-		#GUI_PLATFORM_FILES = $(GUI_PLATFORM_DIR)/gx_platform_mswin.c
+		GUI_PLATFORM_FILES = $(GUI_PLATFORM_DIR)/gx_platform_mswin.c
 	endif
 	ifeq ($(TARGET), Apple)
 		# insert magic here
-		#GUI_PLATFORM_FILES = $(GUI_PLATFORM_DIR)/gx_platform_apple.c
+		GUI_PLATFORM_FILES = $(GUI_PLATFORM_DIR)/gx_platform_apple.c
 	endif
 	# set compile flags
 	CXXFLAGS += -D_FORTIFY_SOURCE=2 -I. -I./dsp -I./plugin -I./dsp/zita-resampler-1.1.0 -I./dsp/zita-resampler-1.1.0/zita-resampler \
@@ -89,7 +89,7 @@
 	LDFLAGS += -I. -shared $(ABI_LDFLAGS) -lm
 	GUI_LDFLAGS += -I./gui -shared $(ABI_LDFLAGS) -lm `$(PKGCONFIG) $(PKGCONFIG_FLAGS) --cflags --libs cairo` $(GUI_LIBS)
 	# invoke build files
-	OBJECTS = plugin/$(NAME).cpp 
+	OBJECTS = plugin/$(NAME).cpp $(GUI_PLATFORM_FILES)
 	GUI_OBJECTS = gui/$(NAME)_gui.c
 	RES_OBJECTS = gui/pedal.o gui/pswitch.o
 	## output style (bash colours)
