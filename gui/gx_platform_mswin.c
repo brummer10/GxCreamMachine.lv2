@@ -87,7 +87,13 @@ void gx_gui_resize_surface(gx_CreamMachineUI *ui) {
 }
 
 void gx_gui_send_controller_event(gx_CreamMachineUI *ui, int controller) {
-	// STUB
+	// On X11 this sends a Window-Message (which is received by polling
+	// the eventloop inside the plugins (idle) event_handler).
+	// This could be simulated using a registered Window-Message (in conjunction
+	// with a buffered message polling to have GUI interactions only from
+	// inside the idle event_handler.
+	controller_expose(ui, &ui->controls[controller]);
+	RedrawWindow(ui->win, NULL, NULL, RDW_NOERASE | RDW_INVALIDATE | RDW_UPDATENOW);
 }
 
 
