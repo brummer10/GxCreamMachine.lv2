@@ -364,7 +364,7 @@ static void draw_controller(gx_CreamMachineUI *ui, gx_controller* controller) {
 }
 
 // general XWindow expose callback, 
-static void _expose(gx_CreamMachineUI *ui) {
+void _expose(gx_CreamMachineUI *ui) {
 	static const char* plug_name = "GxCreamMachine" ;
 	cairo_push_group (ui->cr);
 
@@ -399,7 +399,7 @@ static void _expose(gx_CreamMachineUI *ui) {
 }
 
 // redraw a single controller
-static void controller_expose(gx_CreamMachineUI *ui, gx_controller * control) {
+void controller_expose(gx_CreamMachineUI *ui, gx_controller * control) {
 	cairo_push_group (ui->cr);
 	cairo_scale (ui->cr, ui->rescale.x, ui->rescale.y);
 
@@ -430,7 +430,7 @@ static void controller_expose(gx_CreamMachineUI *ui, gx_controller * control) {
 ----------------------------------------------------------------------*/
 
 // resize the xwindow and the cairo xlib surface
-static void resize_event(gx_CreamMachineUI *ui) {
+void resize_event(gx_CreamMachineUI *ui) {
 	gx_gui_resize_surface(ui);
 	ui->rescale.x  = (double)ui->width/ui->init_width;
 	ui->rescale.y  = (double)ui->height/ui->init_height;
@@ -478,7 +478,7 @@ static bool aligned(int x, int y, gx_controller *control, gx_CreamMachineUI *ui)
 }
 
 // get controller number under mouse pointer and make it active, or return false
-static bool get_active_ctl_num(gx_CreamMachineUI *ui, int *num) {
+bool get_active_ctl_num(gx_CreamMachineUI *ui, int *num) {
 	static bool ret;
 	ret = false;
 	for (int i=0;i<CONTROLS;i++) {
@@ -507,7 +507,7 @@ static bool get_active_controller_num(gx_CreamMachineUI *ui, int *num) {
 /*------------- mouse event handlings ---------------*/
 
 // mouse wheel scroll event
-static void scroll_event(gx_CreamMachineUI *ui, int direction) {
+void scroll_event(gx_CreamMachineUI *ui, int direction) {
 	float value;
 	int num;
 	if (get_active_ctl_num(ui, &num)) {
@@ -536,7 +536,7 @@ static void switch_event(gx_CreamMachineUI *ui, int i) {
 }
 
 // left mouse button is pressed, generate a switch event, or set controller active
-static void button1_event(gx_CreamMachineUI *ui, double* start_value) {
+void button1_event(gx_CreamMachineUI *ui, double* start_value) {
 	int num;
 	if (get_active_ctl_num(ui, &num)) {
 		if (ui->controls[num].type == BSWITCH ||ui->controls[num].type == SWITCH) {
@@ -550,7 +550,7 @@ static void button1_event(gx_CreamMachineUI *ui, double* start_value) {
 }
 
 // mouse move while left button is pressed
-static void motion_event(gx_CreamMachineUI *ui, double start_value, int m_y) {
+void motion_event(gx_CreamMachineUI *ui, double start_value, int m_y) {
 	static const double scaling = 0.5;
 	float value = 0.0;
 	int num;
@@ -569,7 +569,7 @@ static void motion_event(gx_CreamMachineUI *ui, double start_value, int m_y) {
 /*------------- keyboard event handlings ---------------*/
 
 // set min std or max value, depending on which key is pressed
-static void set_key_value(gx_CreamMachineUI *ui, int set_value) {
+void set_key_value(gx_CreamMachineUI *ui, int set_value) {
 	float value = 0.0;
 	int num;
 	if (get_active_controller_num(ui, &num)) {
@@ -581,7 +581,7 @@ static void set_key_value(gx_CreamMachineUI *ui, int set_value) {
 }
 
 // scroll up/down on key's up/right down/left
-static void key_event(gx_CreamMachineUI *ui, int direction) {
+void key_event(gx_CreamMachineUI *ui, int direction) {
 	float value;
 	int num;
 	if (get_active_controller_num(ui, &num)) {
@@ -592,7 +592,7 @@ static void key_event(gx_CreamMachineUI *ui, int direction) {
 }
 
 // set previous controller active on shift+tab key's
-static void set_previous_controller_active(gx_CreamMachineUI *ui) {
+void set_previous_controller_active(gx_CreamMachineUI *ui) {
 	int num;
 	if (get_active_controller_num(ui, &num)) {
 		ui->controls[num].is_active = false;
@@ -616,7 +616,7 @@ static void set_previous_controller_active(gx_CreamMachineUI *ui) {
 }
 
 // set next controller active on tab key
-static void set_next_controller_active(gx_CreamMachineUI *ui) {
+void set_next_controller_active(gx_CreamMachineUI *ui) {
 	int num;
 	if (get_active_controller_num(ui, &num)) {
 		ui->controls[num].is_active = false;
@@ -639,7 +639,7 @@ static void set_next_controller_active(gx_CreamMachineUI *ui) {
 }
 
 // get/set active controller on enter and leave notify
-static void get_last_active_controller(gx_CreamMachineUI *ui, bool set) {
+void get_last_active_controller(gx_CreamMachineUI *ui, bool set) {
 	static gx_controller *sc = NULL;
 	static int s = 0;
 	int num;
@@ -701,7 +701,7 @@ static int key_mapping(Display *dpy, XKeyEvent *xkey) {
 /*------------- the event loop ---------------*/
 
 // general xevent handler
-static void event_handler(gx_CreamMachineUI *ui) {
+void event_handler(gx_CreamMachineUI *ui) {
 	XEvent xev;
 	static double start_value = 0.0;
 	static bool blocked = false;

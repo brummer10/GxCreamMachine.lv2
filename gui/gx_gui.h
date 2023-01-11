@@ -125,7 +125,19 @@ typedef struct {
 } gx_CreamMachineUI;
 
 // forward declarations (internal)
-//void resize_event(gx_CreamMachineUI *ui);
+void resize_event(gx_CreamMachineUI *ui);
+void event_handler(gx_CreamMachineUI *ui);
+void _expose(gx_CreamMachineUI *ui);
+void controller_expose(gx_CreamMachineUI *ui, gx_controller * control);
+void button1_event(gx_CreamMachineUI *ui, double* start_value);
+void scroll_event(gx_CreamMachineUI *ui, int direction);
+void set_previous_controller_active(gx_CreamMachineUI *ui);
+void set_next_controller_active(gx_CreamMachineUI *ui);
+void key_event(gx_CreamMachineUI *ui, int direction);
+void set_key_value(gx_CreamMachineUI *ui, int set_value);
+void get_last_active_controller(gx_CreamMachineUI *ui, bool set);
+void motion_event(gx_CreamMachineUI *ui, double start_value, int m_y);
+bool get_active_ctl_num(gx_CreamMachineUI *ui, int *num);
 
 /*---------------------------------------------------------------------
 -----------------------------------------------------------------------
