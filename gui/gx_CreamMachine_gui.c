@@ -149,7 +149,7 @@ typedef struct {
 typedef struct {
 	Display *dpy;
 	Window win;
-	void *parentXwindow;
+	void *parentWindow;
 	Visual *visual;
 	long event_mask;
 	Atom DrawController;
@@ -221,19 +221,19 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
 		return NULL;
 	}
 
-	ui->parentXwindow = 0;
+	ui->parentWindow = 0;
 	LV2UI_Resize* resize = NULL;
 
 	for (int i = 0; features[i]; ++i) {
 		if (!strcmp(features[i]->URI, LV2_UI__parent)) {
-			ui->parentXwindow = features[i]->data;
+			ui->parentWindow = features[i]->data;
 		} else if (!strcmp(features[i]->URI, LV2_UI__resize)) {
 			resize = (LV2UI_Resize*)features[i]->data;
 		}
 	}
 
-	if (ui->parentXwindow == NULL)  {
-		fprintf(stderr, "ERROR: Failed to open parentXwindow for %s\n", plugin_uri);
+	if (ui->parentWindow == NULL)  {
+		fprintf(stderr, "ERROR: Failed to open parentWindow for %s\n", plugin_uri);
 		free(ui);
 		return NULL;
 	}
@@ -259,7 +259,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
 	ui->height = ui->init_height = cairo_image_surface_get_height(ui->pedal);
 	ui->width = ui->init_width -140 + (70 * CONTROLS);
 
-	ui->win = XCreateWindow(ui->dpy, (Window)ui->parentXwindow, 0, 0,
+	ui->win = XCreateWindow(ui->dpy, (Window)ui->parentWindow, 0, 0,
 								ui->width, ui->height, 0,
 								CopyFromParent, InputOutput,
 								CopyFromParent, CopyFromParent, 0);
@@ -609,7 +609,7 @@ static void controller_expose(gx_CreamMachineUI *ui, gx_controller * control) {
 // resize the xwindow and the cairo xlib surface
 static void resize_event(gx_CreamMachineUI *ui) {
 	XWindowAttributes attrs;
-	XGetWindowAttributes(ui->dpy, (Window)ui->parentXwindow, &attrs);
+	XGetWindowAttributes(ui->dpy, (Window)ui->parentWindow, &attrs);
 	ui->width = attrs.width;
 	ui->height = attrs.height;
 	XResizeWindow (ui->dpy,ui->win ,ui->width, ui->height);
