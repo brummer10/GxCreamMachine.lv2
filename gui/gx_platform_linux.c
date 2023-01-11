@@ -47,5 +47,10 @@ void gx_gui_register_controller_message(gx_CreamMachineUI *ui) {
 	ui->DrawController = XInternAtom(ui->dpy, "ControllerMessage", False);
 }
 
+void gx_gui_destroy_main_window(gx_CreamMachineUI *ui) {
+	XDestroyWindow(ui->dpy, ui->win);
+	XCloseDisplay(ui->dpy);
+}
+
 #endif /* __linux__ */
 #endif /* __GX_PLATFORM_LINUX_H__ */

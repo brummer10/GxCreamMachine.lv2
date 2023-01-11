@@ -140,8 +140,7 @@ static void cleanup(LV2UI_Handle handle) {
 	cairo_surface_destroy(ui->pswitch);
 	cairo_surface_destroy(ui->surface);
 	cairo_surface_destroy(ui->frame);
-	XDestroyWindow(ui->dpy, ui->win);
-	XCloseDisplay(ui->dpy);
+	gx_gui_destroy_main_window(ui);
 	free(ui);
 }
 
