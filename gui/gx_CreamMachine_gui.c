@@ -79,9 +79,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
 		return NULL;
 	}
 
-	ui->dpy = XOpenDisplay(0);
-
-	if (ui->dpy == NULL)  {
+	if (!gx_gui_open_display(ui)) { // sets ui->dpy (only used by Linux)
 		fprintf(stderr, "ERROR: Failed to open display for %s\n", plugin_uri);
 		free(ui);
 		return NULL;

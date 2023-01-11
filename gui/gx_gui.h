@@ -3,6 +3,7 @@
 #define __GX_GUI_H__ 1
 
 #include "gui/gx_platform.h"
+#include "./gx_CreamMachine.h"
 
 /*---------------------------------------------------------------------
 -----------------------------------------------------------------------	
@@ -123,7 +124,16 @@ typedef struct {
 	LV2UI_Resize* resize;
 } gx_CreamMachineUI;
 
-// forward declaration to resize window and cairo surface
-static void resize_event(gx_CreamMachineUI *ui);
+// forward declarations (internal)
+//void resize_event(gx_CreamMachineUI *ui);
+
+/*---------------------------------------------------------------------
+-----------------------------------------------------------------------
+			forward declaration of compatibility functions
+			(have to be implemented in gx_platform_*.c)
+-----------------------------------------------------------------------
+----------------------------------------------------------------------*/
+
+bool gx_gui_open_display(gx_CreamMachineUI *ui);
 
 #endif /* __GX_GUI_H__ */
