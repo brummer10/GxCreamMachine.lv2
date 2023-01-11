@@ -9,11 +9,6 @@
 #include "lv2/lv2plug.in/ns/extensions/ui/ui.h"
 
 #include <cairo.h>
-#include <cairo-xlib.h>
-
-#include <X11/Xutil.h>
-#include <X11/keysym.h>
-#include <X11/Xatom.h>
 
 #include "./gx_CreamMachine.h"
 #include "gui/gx_gui.h"

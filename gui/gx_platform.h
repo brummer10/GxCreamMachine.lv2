@@ -2,6 +2,16 @@
 #ifndef __GX_PLATFORM_H__
 #define __GX_PLATFORM_H__ 1
 
+#ifdef __linux__
+#include <X11/Xutil.h>
+#include <X11/keysym.h>
+#include <X11/Xatom.h>
+#endif /* __linux__ */
+#ifdef _WIN32
+#endif /* _WIN32 */
+#ifdef __APPLE__
+#endif /*__APPLE__ */
+
 /*---------------------------------------------------------------------
 -----------------------------------------------------------------------
 		define some MACROS to read png data from binary stream
