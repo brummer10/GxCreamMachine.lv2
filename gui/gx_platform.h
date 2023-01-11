@@ -32,7 +32,8 @@
 #ifdef _WIN32
 #define platform_ui_members \
 	HWND win; \
-	HWND parentWindow;
+	HWND parentWindow; \
+	BOOL mouse_inside;
 #endif /* _WIN32 */
 
 #ifdef __APPLE__
