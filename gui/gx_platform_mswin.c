@@ -73,7 +73,17 @@ void gx_gui_destroy_main_window(gx_CreamMachineUI *ui) {
 }
 
 void gx_gui_resize_surface(gx_CreamMachineUI *ui) {
-	// STUB
+	RECT rect;
+
+	GetClientRect(ui->parentWindow, &rect);
+	ui->width = rect.right - rect.left;
+	ui->height = rect.bottom - rect.top;
+	SetClientSize(ui->win, ui->width, ui->height);
+	// image_surface cant be resized (only xlib_surface can)
+	cairo_destroy(ui->cr);
+	cairo_surface_destroy(ui->surface);
+	ui->surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, ui->width, ui->height); 
+	ui->cr = cairo_create(ui->surface);
 }
 
 void gx_gui_send_controller_event(gx_CreamMachineUI *ui, int controller) {
