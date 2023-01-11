@@ -98,22 +98,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
 	ui->height = ui->init_height = cairo_image_surface_get_height(ui->pedal);
 	ui->width = ui->init_width -140 + (70 * CONTROLS);
 
-	ui->win = XCreateWindow(ui->dpy, (Window)ui->parentWindow, 0, 0,
-								ui->width, ui->height, 0,
-								CopyFromParent, InputOutput,
-								CopyFromParent, CopyFromParent, 0);
-
-	ui->event_mask = StructureNotifyMask|ExposureMask|KeyPressMask 
-					|EnterWindowMask|LeaveWindowMask|ButtonReleaseMask
-					|ButtonPressMask|Button1MotionMask;
-
-	XSelectInput(ui->dpy, ui->win, ui->event_mask);
-	XMapWindow(ui->dpy, ui->win);
-	XClearWindow(ui->dpy, ui->win);
-
-	ui->visual = DefaultVisual(ui->dpy, DefaultScreen (ui->dpy));
-	ui->surface = cairo_xlib_surface_create (ui->dpy, ui->win, ui->visual,
-										ui->width, ui->height);
+	gx_gui_create_window_and_surface(ui); // sets ui->win and ui->surface
 	ui->cr = cairo_create(ui->surface);
 
 	ui->frame = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 61, 81);

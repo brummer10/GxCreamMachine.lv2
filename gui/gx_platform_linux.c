@@ -24,5 +24,24 @@ bool gx_gui_open_display(gx_CreamMachineUI *ui) {
 	return (ui->dpy != NULL);
 }
 
+void gx_gui_create_window_and_surface(gx_CreamMachineUI *ui) {
+	ui->win = XCreateWindow(ui->dpy, (Window)ui->parentWindow, 0, 0,
+								ui->width, ui->height, 0,
+								CopyFromParent, InputOutput,
+								CopyFromParent, CopyFromParent, 0);
+
+	ui->event_mask = StructureNotifyMask|ExposureMask|KeyPressMask 
+					|EnterWindowMask|LeaveWindowMask|ButtonReleaseMask
+					|ButtonPressMask|Button1MotionMask;
+
+	XSelectInput(ui->dpy, ui->win, ui->event_mask);
+	XMapWindow(ui->dpy, ui->win);
+	XClearWindow(ui->dpy, ui->win);
+
+	ui->visual = DefaultVisual(ui->dpy, DefaultScreen (ui->dpy));
+	ui->surface = cairo_xlib_surface_create (ui->dpy, ui->win, ui->visual,
+										ui->width, ui->height);
+}
+
 #endif /* __linux__ */
 #endif /* __GX_PLATFORM_LINUX_H__ */
