@@ -43,5 +43,9 @@ void gx_gui_create_window_and_surface(gx_CreamMachineUI *ui) {
 										ui->width, ui->height);
 }
 
+void gx_gui_register_controller_message(gx_CreamMachineUI *ui) {
+	ui->DrawController = XInternAtom(ui->dpy, "ControllerMessage", False);
+}
+
 #endif /* __linux__ */
 #endif /* __GX_PLATFORM_LINUX_H__ */

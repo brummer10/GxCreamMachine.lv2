@@ -122,7 +122,7 @@ static LV2UI_Handle instantiate(const LV2UI_Descriptor * descriptor,
 	ui->rescale.x2 =  ui->rescale.xc / ui->rescale.c;
 	ui->rescale.y2 = ui->rescale.y / ui->rescale.c;
 
-	ui->DrawController = XInternAtom(ui->dpy, "ControllerMessage", False);
+	gx_gui_register_controller_message(ui); // message for redrawing a controller (only used by Linux)
 
 	ui->controller = controller;
 	ui->write_function = write_function;
