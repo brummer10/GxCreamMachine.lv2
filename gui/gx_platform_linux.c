@@ -61,5 +61,16 @@ void gx_gui_resize_surface(gx_CreamMachineUI *ui) {
 	cairo_xlib_surface_set_size( ui->surface, ui->width, ui->height);
 }
 
+void gx_gui_send_controller_event(gx_CreamMachineUI *ui, int controller) {
+	XClientMessageEvent xevent;
+	xevent.type = ClientMessage;
+	xevent.message_type = ui->DrawController;
+	xevent.display = ui->dpy;
+	xevent.window = ui->win;
+	xevent.format = 16;
+	xevent.data.l[0] = controller;
+	XSendEvent(ui->dpy, ui->win, 0, 0, (XEvent *)&xevent);
+}
+
 #endif /* __linux__ */
 #endif /* __GX_PLATFORM_LINUX_H__ */

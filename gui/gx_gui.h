@@ -139,5 +139,6 @@ void gx_gui_create_window_and_surface(gx_CreamMachineUI *ui);
 void gx_gui_register_controller_message(gx_CreamMachineUI *ui);
 void gx_gui_destroy_main_window(gx_CreamMachineUI *ui);
 void gx_gui_resize_surface(gx_CreamMachineUI *ui);
+void gx_gui_send_controller_event(gx_CreamMachineUI *ui, int controller);
 
 #endif /* __GX_GUI_H__ */

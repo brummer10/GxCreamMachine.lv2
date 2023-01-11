@@ -444,14 +444,7 @@ static void resize_event(gx_CreamMachineUI *ui) {
 
 // send event when active controller changed
 static void send_controller_event(gx_CreamMachineUI *ui, int controller) {
-	XClientMessageEvent xevent;
-	xevent.type = ClientMessage;
-	xevent.message_type = ui->DrawController;
-	xevent.display = ui->dpy;
-	xevent.window = ui->win;
-	xevent.format = 16;
-	xevent.data.l[0] = controller;
-	XSendEvent(ui->dpy, ui->win, 0, 0, (XEvent *)&xevent);
+	gx_gui_send_controller_event(ui, controller);
 }
 
 /*------------- check and set state of controllers ---------------*/
