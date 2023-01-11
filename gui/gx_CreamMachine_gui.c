@@ -2,12 +2,11 @@
 #include <math.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "lv2/lv2plug.in/ns/lv2core/lv2.h"
 #include "lv2/lv2plug.in/ns/extensions/ui/ui.h"
-
-#include <stdio.h>
-#include <stdlib.h>
 
 #include <cairo.h>
 #include <cairo-xlib.h>
@@ -19,15 +18,15 @@
 #include "./gx_CreamMachine.h"
 #include "gui/gx_gui.h"
 
-// png's linked in as binarys
-EXTLD(pedal_png)
-EXTLD(pswitch_png)
-
 /*---------------------------------------------------------------------
 -----------------------------------------------------------------------	
 		load png data from binary blob into cairo surface
 -----------------------------------------------------------------------
 ----------------------------------------------------------------------*/
+
+// png's linked in as binarys
+EXTLD(pedal_png)
+EXTLD(pswitch_png)
 
 // read png data from binary blob
 cairo_status_t png_stream_reader (void *_stream, unsigned char *data, unsigned int length) {
