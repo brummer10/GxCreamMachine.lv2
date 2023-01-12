@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include <windowsx.h>
-#include <cairo/cairo-win32.h>
+#include <cairo-win32.h>
 
 #include <gui/gx_gui.h>
 

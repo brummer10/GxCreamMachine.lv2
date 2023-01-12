@@ -9,7 +9,7 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include <X11/Xatom.h>
-#include <cairo/cairo-xlib.h>
+#include <cairo-xlib.h>
 
 #include <gui/gx_gui.h>
 
