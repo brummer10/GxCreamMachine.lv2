@@ -85,7 +85,7 @@
 	# set compile flags
 	CXXFLAGS += -D_FORTIFY_SOURCE=2 -I. -I./dsp -I./plugin -I./dsp/zita-resampler-1.1.0 -I./dsp/zita-resampler-1.1.0/zita-resampler \
 	 -fPIC -DPIC -O2 -Wall -fstack-protector -funroll-loops -ffast-math -fomit-frame-pointer -fstrength-reduce \
-	 -fdata-sections -Wl,--gc-sections $(SSE_CFLAGS) `$(PKGCONFIG) $(PKGCONFIG_FLAGS) --cflags lv2`
+	 -fdata-sections -Wl,--gc-sections $(ABI_CXXFLAGS) $(SSE_CFLAGS) `$(PKGCONFIG) $(PKGCONFIG_FLAGS) --cflags lv2`
 	LDFLAGS += -I. -shared $(ABI_LDFLAGS) -lm
 	GUI_LDFLAGS += -I./gui -shared $(ABI_LDFLAGS) -lm `$(PKGCONFIG) $(PKGCONFIG_FLAGS) --cflags --libs cairo` $(GUI_LIBS)
 	# invoke build files
